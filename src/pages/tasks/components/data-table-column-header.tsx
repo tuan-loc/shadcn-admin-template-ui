@@ -5,8 +5,7 @@ import {
   EyeNoneIcon,
 } from '@radix-ui/react-icons'
 import { Column } from '@tanstack/react-table'
-
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/custom/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
