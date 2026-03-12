@@ -35,6 +35,9 @@ const AuthenticatedTasksIndexLazyImport = createFileRoute(
 const AuthenticatedSettingsIndexLazyImport = createFileRoute(
   '/_authenticated/settings/'
 )()
+const AuthenticatedHelpCenterIndexLazyImport = createFileRoute(
+  '/_authenticated/help-center/'
+)()
 const AuthenticatedChatsIndexLazyImport = createFileRoute(
   '/_authenticated/chats/'
 )()
@@ -176,6 +179,17 @@ const AuthenticatedSettingsIndexLazyRoute =
     getParentRoute: () => AuthenticatedSettingsRouteLazyRoute,
   } as any).lazy(() =>
     import('./routes/_authenticated/settings/index.lazy').then((d) => d.Route)
+  )
+
+const AuthenticatedHelpCenterIndexLazyRoute =
+  AuthenticatedHelpCenterIndexLazyImport.update({
+    id: '/help-center/',
+    path: '/help-center/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/help-center/index.lazy').then(
+      (d) => d.Route
+    )
   )
 
 const AuthenticatedChatsIndexLazyRoute =
@@ -395,6 +409,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedChatsIndexLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/help-center/': {
+      id: '/_authenticated/help-center/'
+      path: '/help-center'
+      fullPath: '/help-center'
+      preLoaderRoute: typeof AuthenticatedHelpCenterIndexLazyImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -446,6 +467,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
+  AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
   AuthenticatedTasksIndexLazyRoute: typeof AuthenticatedTasksIndexLazyRoute
 }
 
@@ -456,6 +478,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
+  AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
   AuthenticatedTasksIndexLazyRoute: AuthenticatedTasksIndexLazyRoute,
 }
 
@@ -483,6 +506,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
+  '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/settings/': typeof AuthenticatedSettingsIndexLazyRoute
   '/tasks': typeof AuthenticatedTasksIndexLazyRoute
 }
@@ -506,6 +530,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
+  '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/settings': typeof AuthenticatedSettingsIndexLazyRoute
   '/tasks': typeof AuthenticatedTasksIndexLazyRoute
 }
@@ -533,6 +558,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
+  '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexLazyRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexLazyRoute
 }
@@ -560,6 +586,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/apps'
     | '/chats'
+    | '/help-center'
     | '/settings/'
     | '/tasks'
   fileRoutesByTo: FileRoutesByTo
@@ -582,6 +609,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/apps'
     | '/chats'
+    | '/help-center'
     | '/settings'
     | '/tasks'
   id:
@@ -607,6 +635,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/'
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
+    | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
   fileRoutesById: FileRoutesById
@@ -648,119 +677,124 @@ export const routeTree = rootRoute
 
 /* ROUTE_MANIFEST_START
 {
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/_authenticated",
-        "/(auth)/500",
-        "/(auth)/otp",
-        "/(auth)/sign-in",
-        "/(auth)/forgot-password",
-        "/(auth)/sign-in-2",
-        "/(auth)/sign-up",
-        "/(errors)/401",
-        "/(errors)/403",
-        "/(errors)/404",
-        "/(errors)/500",
-        "/(errors)/503"
-      ]
-    },
-    "/_authenticated": {
-      "filePath": "_authenticated/route.tsx",
-      "children": [
-        "/_authenticated/settings",
-        "/_authenticated/",
-        "/_authenticated/dashboard/",
-        "/_authenticated/apps/",
-        "/_authenticated/chats/",
-        "/_authenticated/tasks/"
-      ]
-    },
-    "/(auth)/500": {
-      "filePath": "(auth)/500.tsx"
-    },
-    "/(auth)/otp": {
-      "filePath": "(auth)/otp.tsx"
-    },
-    "/(auth)/sign-in": {
-      "filePath": "(auth)/sign-in.tsx"
-    },
-    "/_authenticated/settings": {
-      "filePath": "_authenticated/settings/route.lazy.tsx",
-      "parent": "/_authenticated",
-      "children": [
-        "/_authenticated/settings/account",
-        "/_authenticated/settings/appearance",
-        "/_authenticated/settings/display",
-        "/_authenticated/settings/notifications",
-        "/_authenticated/settings/"
-      ]
-    },
-    "/(auth)/forgot-password": {
-      "filePath": "(auth)/forgot-password.lazy.tsx"
-    },
-    "/(auth)/sign-in-2": {
-      "filePath": "(auth)/sign-in-2.lazy.tsx"
-    },
-    "/(auth)/sign-up": {
-      "filePath": "(auth)/sign-up.lazy.tsx"
-    },
-    "/(errors)/401": {
-      "filePath": "(errors)/401.lazy.tsx"
-    },
-    "/(errors)/403": {
-      "filePath": "(errors)/403.lazy.tsx"
-    },
-    "/(errors)/404": {
-      "filePath": "(errors)/404.lazy.tsx"
-    },
-    "/(errors)/500": {
-      "filePath": "(errors)/500.lazy.tsx"
-    },
-    "/(errors)/503": {
-      "filePath": "(errors)/503.lazy.tsx"
-    },
-    "/_authenticated/": {
-      "filePath": "_authenticated/index.tsx",
+ "routes": {
+   "__root__": {
+     "filePath": "__root.tsx",
+     "children": [
+       "/_authenticated",
+       "/(auth)/500",
+       "/(auth)/otp",
+       "/(auth)/sign-in",
+       "/(auth)/forgot-password",
+       "/(auth)/sign-in-2",
+       "/(auth)/sign-up",
+       "/(errors)/401",
+       "/(errors)/403",
+       "/(errors)/404",
+       "/(errors)/500",
+       "/(errors)/503"
+     ]
+   },
+   "/_authenticated": {
+     "filePath": "_authenticated/route.tsx",
+     "children": [
+       "/_authenticated/settings",
+       "/_authenticated/",
+       "/_authenticated/dashboard/",
+       "/_authenticated/apps/",
+       "/_authenticated/chats/",
+        "/_authenticated/help-center/",
+       "/_authenticated/tasks/"
+     ]
+   },
+   "/(auth)/500": {
+     "filePath": "(auth)/500.tsx"
+   },
+   "/(auth)/otp": {
+     "filePath": "(auth)/otp.tsx"
+   },
+   "/(auth)/sign-in": {
+     "filePath": "(auth)/sign-in.tsx"
+   },
+   "/_authenticated/settings": {
+     "filePath": "_authenticated/settings/route.lazy.tsx",
+     "parent": "/_authenticated",
+     "children": [
+       "/_authenticated/settings/account",
+       "/_authenticated/settings/appearance",
+       "/_authenticated/settings/display",
+       "/_authenticated/settings/notifications",
+       "/_authenticated/settings/"
+     ]
+   },
+   "/(auth)/forgot-password": {
+     "filePath": "(auth)/forgot-password.lazy.tsx"
+   },
+   "/(auth)/sign-in-2": {
+     "filePath": "(auth)/sign-in-2.lazy.tsx"
+   },
+   "/(auth)/sign-up": {
+     "filePath": "(auth)/sign-up.lazy.tsx"
+   },
+   "/(errors)/401": {
+     "filePath": "(errors)/401.lazy.tsx"
+   },
+   "/(errors)/403": {
+     "filePath": "(errors)/403.lazy.tsx"
+   },
+   "/(errors)/404": {
+     "filePath": "(errors)/404.lazy.tsx"
+   },
+   "/(errors)/500": {
+     "filePath": "(errors)/500.lazy.tsx"
+   },
+   "/(errors)/503": {
+     "filePath": "(errors)/503.lazy.tsx"
+   },
+   "/_authenticated/": {
+     "filePath": "_authenticated/index.tsx",
+     "parent": "/_authenticated"
+   },
+   "/_authenticated/settings/account": {
+     "filePath": "_authenticated/settings/account.lazy.tsx",
+     "parent": "/_authenticated/settings"
+   },
+   "/_authenticated/settings/appearance": {
+     "filePath": "_authenticated/settings/appearance.lazy.tsx",
+     "parent": "/_authenticated/settings"
+   },
+   "/_authenticated/settings/display": {
+     "filePath": "_authenticated/settings/display.lazy.tsx",
+     "parent": "/_authenticated/settings"
+   },
+   "/_authenticated/settings/notifications": {
+     "filePath": "_authenticated/settings/notifications.lazy.tsx",
+     "parent": "/_authenticated/settings"
+   },
+   "/_authenticated/dashboard/": {
+     "filePath": "_authenticated/dashboard/index.tsx",
+     "parent": "/_authenticated"
+   },
+   "/_authenticated/apps/": {
+     "filePath": "_authenticated/apps/index.lazy.tsx",
+     "parent": "/_authenticated"
+   },
+   "/_authenticated/chats/": {
+     "filePath": "_authenticated/chats/index.lazy.tsx",
+     "parent": "/_authenticated"
+   },
+    "/_authenticated/help-center/": {
+      "filePath": "_authenticated/help-center/index.lazy.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/settings/account": {
-      "filePath": "_authenticated/settings/account.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/appearance": {
-      "filePath": "_authenticated/settings/appearance.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/display": {
-      "filePath": "_authenticated/settings/display.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/settings/notifications": {
-      "filePath": "_authenticated/settings/notifications.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/dashboard/": {
-      "filePath": "_authenticated/dashboard/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/apps/": {
-      "filePath": "_authenticated/apps/index.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/chats/": {
-      "filePath": "_authenticated/chats/index.lazy.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/settings/": {
-      "filePath": "_authenticated/settings/index.lazy.tsx",
-      "parent": "/_authenticated/settings"
-    },
-    "/_authenticated/tasks/": {
-      "filePath": "_authenticated/tasks/index.lazy.tsx",
-      "parent": "/_authenticated"
-    }
-  }
+   "/_authenticated/settings/": {
+     "filePath": "_authenticated/settings/index.lazy.tsx",
+     "parent": "/_authenticated/settings"
+   },
+   "/_authenticated/tasks/": {
+     "filePath": "_authenticated/tasks/index.lazy.tsx",
+     "parent": "/_authenticated"
+   }
+ }
 }
 ROUTE_MANIFEST_END */
